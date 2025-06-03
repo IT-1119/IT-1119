@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free BarCode</title>
+        <link rel="stylesheet" href="css folder/style.css">
+    <!-- Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator/qrcode.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #3b82f6;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --text: #1e293b;
+            --success: #22c55e;
+            --error: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 0 rem;
+        }
+
+        .container {
+            /* max-width: 800px;
+            margin: 0 auto;
+            background: var(--surface);
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); */
+            padding: 0.5rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #64748b;
+        }
+
+        .form-section {
+            display: grid;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-weight: 500;
+            color: #475569;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.875rem;
+            border: 2px solid var(--border);
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .color-pickers, .size-controls {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        input[type="color"] {
+            height: 48px;
+            padding: 0.25rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        button:hover {
+            background: var(--secondary);
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .result-section {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        #generatedCode {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        #downloadBtn {
+            margin-top: 1.5rem;
+            background: var(--success);
+            display: none;
+        }
+
+        .history-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--border);
+        }
+
+        .history-list {
+            list-style: none;
+            display: grid;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .history-item {
+            padding: 1rem;
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .error-message {
+            color: var(--error);
+            margin-top: 1rem;
+            font-weight: 500;
+            display: none;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .color-pickers, .size-controls {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+     <header>
+        <nav id="navbar">
+            <div class="container">
+            <h1 class="logo"><a href="index.html">Silver</a></h1>
+            <ul>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a class="current" href="generate.html">Generate</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <div class="header">
+            <h1>Silver Code Generator</h1>
+            <p>Create custom barcodes & QR codes in seconds</p>
+        </div>
+
+        <div class="form-section">
+            <div class="input-group">
+                <label>Code Type</label>
+                <select id="codeType">
+                    <option value="barcode">Barcode</option>
+                    <option value="qrcode">QR Code</option>
+                </select>
+            </div>
+
+            <div class="input-group" id="barcodeFormatGroup">
+                <label>Barcode Format</label>
+                <select id="barcodeFormat">
+                    <option value="CODE128">CODE128</option>
+                    <option value="EAN13">EAN-13</option>
+                    <option value="UPC">UPC</option>
+                    <option value="CODE39">CODE39</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>Your Data</label>
+                <input type="text" id="inputData" placeholder="Enter your data here..." required>
+            </div>
+
+            <div class="size-controls">
+                <div class="input-group">
+                    <label>Width</label>
+                    <input type="number" id="width" min="1" value="2">
+                </div>
+                <div class="input-group">
+                    <label>Height</label>
+                    <input type="number" id="height" min="1" value="100">
+                </div>
+            </div>
+
+            <div class="color-pickers">
+                <div class="input-group">
+                    <label>Foreground Color</label>
+                    <input type="color" id="lineColor" value="#000000">
+                </div>
+                <div class="input-group">
+                    <label>Background Color</label>
+                    <input type="color" id="bgColor" value="#ffffff">
+                </div>
+            </div>
+
+            <button type="submit" id="generateBtn">Generate Code</button>
+        </div>
+
+        <div class="result-section">
+            <div id="generatedCode"></div>
+            <button id="downloadBtn">Download Code</button>
+            <div class="error-message" id="errorMessage"></div>
+        </div>
+
+        <div class="history-section">
+            <h2>Generation History</h2>
+            <ul class="history-list" id="historyList"></ul>
+        </div>
+    </div>
+
+    <script>
+        // Firebase Configuration (Replace with your values)
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // DOM Elements
+        const generateBtn = document.getElementById('generateBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // Event Listeners
+        generateBtn.addEventListener('click', generateCode);
+        downloadBtn.addEventListener('click', downloadCode);
+        document.getElementById('codeType').addEventListener('change', toggleCodeType);
+
+        // Toggle Barcode Format Visibility
+        function toggleCodeType() {
+            const codeType = document.getElementById('codeType').value;
+            document.getElementById('barcodeFormatGroup').style.display = 
+                codeType === 'barcode' ? 'block' : 'none';
+        }
+
+        // Main Generation Function
+        async function generateCode() {
+            try {
+                clearUI();
+                const params = getInputParams();
+                validateInput(params.data);
+
+                const canvas = params.codeType === 'barcode' 
+                    ? await generateBarcode(params) 
+                    : await generateQRCode(params);
+
+                displayCode(canvas);
+                saveToDatabase(params);
+                loadHistory();
+            } catch (error) {
+                showError(error.message);
+            }
+        }
+
+        // Get Input Parameters
+        function getInputParams() {
+            return {
+                data: document.getElementById('inputData').value.trim(),
+                codeType: document.getElementById('codeType').value,
+                format: document.getElementById('barcodeFormat').value,
+                width: document.getElementById('width').value,
+                height: document.getElementById('height').value,
+                lineColor: document.getElementById('lineColor').value,
+                bgColor: document.getElementById('bgColor').value
+            };
+        }
+
+        // Input Validation
+        function validateInput(data) {
+            if (!data) throw new Error('Please enter some data to generate!');
+        }
+
+        // Barcode Generation
+        async function generateBarcode({ data, format, width, height, lineColor, bgColor }) {
+            const canvas = document.createElement('canvas');
+            JsBarcode(canvas, data, {
+                format: format,
+                width: width,
+                height: height,
+                lineColor: lineColor,
+                background: bgColor,
+                displayValue: true
+            });
+            return canvas;
+        }
+
+        // QR Code Generation
+        async function generateQRCode({ data, width, height, lineColor, bgColor }) {
+            const qr = qrcode(0, 'M');
+            qr.addData(data);
+            qr.make();
+
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = width * 25;
+            canvas.height = height * 25;
+
+            ctx.fillStyle = bgColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = lineColor;
+
+            const cells = qr.getModuleCount();
+            const tileW = canvas.width / cells;
+            const tileH = canvas.height / cells;
+
+            for (let row = 0; row < cells; row++) {
+                for (let col = 0; col < cells; col++) {
+                    if (qr.isDark(row, col)) {
+                        ctx.fillRect(col * tileW, row * tileH, tileW, tileH);
+                    }
+                }
+            }
+            return canvas;
+        }
+
+        // Display Generated Code
+        function displayCode(canvas) {
+            const img = new Image();
+            img.src = canvas.toDataURL('image/png');
+            img.alt = "Generated Code";
+            img.classList.add('generated-image');
+            document.getElementById('generatedCode').appendChild(img);
+            downloadBtn.style.display = 'inline-block';
+        }
+
+        // Download Functionality
+        function downloadCode() {
+            const img = document.querySelector('.generated-image');
+            const link = document.createElement('a');
+            link.download = `code_${Date.now()}.png`;
+            link.href = img.src;
+            link.click();
+        }
+
+        // Database Operations
+        function saveToDatabase(params) {
+            database.ref('generations').push({
+                type: params.codeType,
+                data: params.data,
+                timestamp: firebase.database.ServerValue.TIMESTAMP
+            });
+        }
+
+        function loadHistory() {
+            const historyList = document.getElementById('historyList');
+            historyList.innerHTML = '';
+
+            database.ref('generations').limitToLast(5).on('value', (snapshot) => {
+                snapshot.forEach((childSnapshot) => {
+                    const item = childSnapshot.val();
+                    const li = document.createElement('li');
+                    li.className = 'history-item';
+                    li.innerHTML = `
+                        <span>${new Date(item.timestamp).toLocaleString()}</span>
+                        <span>${item.type.toUpperCase()}: ${item.data}</span>
+                    `;
+                    historyList.prepend(li);
+                });
+            });
+        }
+
+        // UI Helpers
+        function clearUI() {
+            document.getElementById('generatedCode').innerHTML = '';
+            downloadBtn.style.display = 'none';
+            errorMessage.style.display = 'none';
+        }
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+        }
+
+        // Initial Setup
+        toggleCodeType();
+        loadHistory();
+    </script>
+    <footer id="main-footer">
+        <p>2025 Free BarCode &copy; All rights reserved. VSM</p>
+</body>
+</html>
