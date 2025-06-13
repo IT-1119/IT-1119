@@ -1,0 +1,210 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+/* main style */
+html,body{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.7em;
+}
+a {
+    color: #333;
+    text-decoration:none;
+}
+h1,h2,h3 {
+  padding-bottom: 20px;
+}
+p {
+  margin: 10px 0;
+}
+/* utility class */
+.container {
+  margin:auto;
+  max-width:1100px;
+  overflow:auto;
+  padding:0 20px;
+}
+.text-primary {
+  color:#c43636;
+}
+.lead {
+  font-size: 20px;
+  line-height: 1.5em;
+}
+.btn {
+  display: inline-block;
+  font-size: 18px;
+  color:#fff;
+  background:#360b0b;
+  padding: 13px 20px;
+  border:none;
+  cursor:pointer;
+}
+.btn:hover{
+  background:#c43636;
+  color:#fff;
+}
+.box bg-light  {
+  width: fit-content;
+}
+.bg-dark {
+  background:#333;
+  color:#fff;
+  display: flex;
+  justify-content: space-between;
+}
+.bg-dark .img-container {
+  width: fit-content;
+}
+.bg-primary {
+  background: #643737;
+  color: #fff;
+}
+.bg-dark img {
+  width: 100%;
+}
+.clr{
+  clear: both;
+}
+.l-heading {
+  font-size:40px
+}
+/* padding */
+.py-1 {padding: 10px 0;}
+.py-2 {padding: 20px 0;}
+.py-3 {padding: 30px 0;}
+
+
+
+/* tsesnii saite uud */
+#navbar {
+  background-color: #333;
+  color: #fff;
+  overflow:auto;
+}
+#navbar a {
+  color:#fff
+}
+#navbar h1 {
+  float:left;
+  padding-top: 20px;
+}
+#navbar ul {
+  list-style:none;
+  float: right;
+}
+#navbar ul li {
+  float: left;
+}
+#navbar ul li a {
+  display: block;
+  padding: 20px;
+  text-align: center;
+}
+#navbar ul li a:hover,
+#navbar ul li a.current {
+background: #444;
+  color:#c43636
+} 
+
+/* show style */
+#showcase{
+  background: url('../IMG/pexels-kampus-7289717.jpg') center center/cover;
+  height: 600px;
+}
+#showcase .showcase-content {
+  color:#000000;
+  text-align: center;
+  padding-top: 170px;
+}
+#showcase .showcase-content h1 {
+  font-size: 60px;
+line-height: 1.2em;
+}
+#showcase .showcase-content p {
+  padding-bottom: 20px;
+  line-height: 1.7em;
+}
+/* imformation */
+/* #web-info{
+  height: 400px;
+}
+#web-info .info-img {
+  float: left;
+  width: 50%;
+  background: url('../IMG/pexels-luyi-11264966.jpg')no-repeat center;
+  min-height: 100%;
+} */
+/* features */
+.box {
+  float: left;
+  width: 33.3%;
+  padding: 50px;
+  text-align:center;
+}
+.box img {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 20px;
+}
+
+/* about info */
+#about-info .info-right {
+  float:right;
+  width: 50%;
+  min-height: 100%;
+}
+
+#about-info .info-right img {
+  display: block;
+  margin: auto;
+  width :70%;
+  border-radius: 50%;
+}
+#about-info .info-left {
+  float:left;
+  width: 50%;
+  padding: 60px;
+}
+/* contact form */
+#contact-form .form-group {
+  margin-bottom: 20px;
+}
+
+#contact-form label {
+  display:block;
+  margin-bottom:5px;
+
+}
+
+#contact-form input,
+#contact-form textarea{
+  width: 100%;
+  padding:10px;
+  border: 1px #ddd solid;
+}
+
+
+#contact-form textarea{
+  height: 100px;
+}
+
+#contact-form input:focus,
+#contact-form textarea:focus{
+     outline: none;
+     border-color:rgb(156, 96, 18)
+}
+
+
+
+
+
+
+#main-footer{
+  text-align: center;
+  background:#444;
+  color:#fff;
+  padding:20px;
+}
